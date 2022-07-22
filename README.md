@@ -18,6 +18,10 @@ install & manage versions of Rust.
 
 ## Configuration
 
+You can set the environmental variable `ASDF_RUST_PROFILE` to specify which
+[profile](https://rust-lang.github.io/rustup/concepts/profiles.html) you want
+to install.
+
 ### Default cargo crates
 
 asdf-rust can automatically install a default set of packages with cargo right
