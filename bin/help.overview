@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+echo "Rust plugin for asdf version manager that relies on rustup for installation."

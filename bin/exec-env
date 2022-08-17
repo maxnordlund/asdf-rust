@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
 
-export CARGO_HOME=$ASDF_INSTALL_PATH
-export RUSTUP_HOME=$ASDF_INSTALL_PATH
+ASDF_PLUGIN_PATH="${ASDF_PLUGIN_PATH:-"$(cd "$(dirname "${BASH_SOURCE[0]}")/.." &> /dev/null && pwd)"}"
+
+export RUSTUP_INIT_SKIP_PATH_CHECK=yes
+export CARGO_HOME="$ASDF_PLUGIN_PATH/cargo"
+export RUSTUP_HOME="$ASDF_PLUGIN_PATH/rustup"

@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+# shellcheck source=./exec-env
+source "$(dirname "$0")/exec-env"
+
+# From https://unix.stackexchange.com/a/269303
+# Prints out the relative path between to absolute paths.
+#
+# Parameters:
+# $1 = first path
+# $2 = second path
+#
+# Output: the relative path between 1st and 2nd paths
+relpath() {
+    local pos="${1%%/}" ref="${2%%/}" down=''
+
+    while :; do
+        test "$pos" = '/' && break
+        case "$ref" in $pos/*) break;; esac
+        down="../$down"
+        pos=${pos%/*}
+    done
+
+    echo "$down${ref##$pos/}"
+}
+
+# All rustup shims are located in $CARGO_HOME/bin, but `asdf` wants relative
+# paths to ASDF_INSTALL_PATH. So we borrow some code from StackExchange to
+# make it happened.
+echo "$(relpath "$ASDF_INSTALL_PATH" "$CARGO_HOME/bin")"

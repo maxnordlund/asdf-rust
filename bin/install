@@ -4,8 +4,26 @@
 source "$(dirname "$0")/exec-env"
 
 install_rust() {
-    local profile="${ASDF_RUST_PROFILE:-default}"
-    RUSTUP_INIT_SKIP_PATH_CHECK=yes rustup-init -y --no-modify-path --default-toolchain "$ASDF_INSTALL_VERSION" --profile "$profile"
+    local arguments="--no-self-update --profile=${ASDF_RUST_PROFILE:-default}"
+
+    if echo "$ASDF_INSTALL_VERSION" | grep -q "^nightly"; then
+        # Allow rustup to downgrade the toolchain to satisfy your component choice
+        arguments="$arguments --allow-downgrade"
+    fi
+
+    if test -n "$ASDF_RUST_TARGETS"; then
+        arguments="$arguments --target $ASDF_RUST_TARGETS"
+    fi
+
+    if test -n "$ASDF_RUST_COMPONENTS"; then
+        arguments="$arguments --component $ASDF_RUST_COMPONENTS"
+    fi
+
+    export PATH="$CARGO_HOME/bin:$PATH"
+    printenv | sort
+    rustup toolchain install $arguments "$ASDF_INSTALL_VERSION" &&
+        rmdir "$ASDF_INSTALL_PATH" &&
+        ln -s "$(RUSTUP_TOOLCHAIN="$ASDF_INSTALL_VERSION" rustc --print sysroot)" "$ASDF_INSTALL_PATH"
 }
 
 install_default_cargo_packages() {

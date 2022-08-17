@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+echo rustup: https://rust-lang.github.io/rustup/index.html
+echo "rustup-components-history: https://rust-lang.github.io/rustup-components-history/$(cc -dumpmachine 2>/dev/null | sed -E 's/([0-9]+\.?)*$//')"

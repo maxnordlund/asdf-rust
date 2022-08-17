@@ -20,13 +20,17 @@ install & manage versions of Rust.
 
 You can set the environmental variable `ASDF_RUST_PROFILE` to specify which
 [profile](https://rust-lang.github.io/rustup/concepts/profiles.html) you want
-to install.
+to install. Similarly for `ASDF_RUST_TARGETS` for adding extra
+[targets](https://rust-lang.github.io/rustup/concepts/targets.html) and
+`ASDF_RUST_COMPONENTS` for adding extra
+[components](https://rust-lang.github.io/rustup/concepts/components.html).
 
 ### Default cargo crates
 
 asdf-rust can automatically install a default set of packages with cargo right
 after installing a Rust version. To enable this feature, provide a
-$HOME/.default-cargo-crates file that lists one package per line, for example:
+`$HOME/.default-cargo-crates` file that lists one package per line, for
+example:
 
 ```
 # You can add comments
@@ -39,15 +43,22 @@ You can specify a non-default location of this file by setting a
 
 ## Inspiration
 
-This is partly based on https://github.com/asdf-community/asdf-rust and
-https://github.com/code-lever/asdf-rust. From the former it takes the GitHub
+This was first based on https://github.com/asdf-community/asdf-rust and
+https://github.com/code-lever/asdf-rust. From the former it took the GitHub
 action/test setup, and from the latter the decision to use [`rustup`][] instead
 of manual installation.
 
-The difference is that this does not pipe a curl int `sh`. Even though it's
-from https://rustup.rs, it feels a bit icky to do.
+The difference is that this did not, and does not, pipe a curl int `sh`. Even
+though it's from https://rustup.rs, it feels a bit icky to do.
 
 Instead you need to install rustup yourself.
+
+Now it fully embraces [`rustup`][] by having only one global installation
+(under `ASDF_DATA_DIR`) of [`rustup][]. Then it symlinks the various versions
+as needed. This means only one download for a specific version. However, if you
+use a [channel](https://rust-lang.github.io/rustup/concepts/channels.html) as
+the rust version it will be updated if you run `rustup update`. Avoid this by
+using a precise version, like 1.65.0 or nightly-2022-08-11.
 
 ## License
 
