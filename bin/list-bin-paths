@@ -16,15 +16,15 @@ relpath() {
 
     while :; do
         test "$pos" = '/' && break
-        case "$ref" in $pos/*) break;; esac
+        case "$ref" in $pos/*) break ;; esac
         down="../$down"
         pos=${pos%/*}
     done
 
-    echo "$down${ref##$pos/}"
+    echo "$down${ref##"$pos"/}"
 }
 
 # All rustup shims are located in $CARGO_HOME/bin, but `asdf` wants relative
 # paths to ASDF_INSTALL_PATH. So we borrow some code from StackExchange to
 # make it happened.
-echo "$(relpath "$ASDF_INSTALL_PATH" "$CARGO_HOME/bin")"
+relpath "$ASDF_INSTALL_PATH" "$CARGO_HOME/bin"

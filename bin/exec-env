@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-ASDF_PLUGIN_PATH="${ASDF_PLUGIN_PATH:-"$(cd "$(dirname "${BASH_SOURCE[0]}")/.." &> /dev/null && pwd)"}"
+ASDF_PLUGIN_PATH="${ASDF_PLUGIN_PATH:-"$(cd "$(dirname "${BASH_SOURCE[0]}")/.." &>/dev/null && pwd)"}"
 
 export RUSTUP_INIT_SKIP_PATH_CHECK=yes
 export CARGO_HOME="$ASDF_PLUGIN_PATH/cargo"

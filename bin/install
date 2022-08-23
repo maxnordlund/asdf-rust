@@ -20,7 +20,7 @@ install_rust() {
     fi
 
     export PATH="$CARGO_HOME/bin:$PATH"
-    printenv | sort
+    # shellcheck disable=SC2086
     rustup toolchain install $arguments "$ASDF_INSTALL_VERSION" &&
         rmdir "$ASDF_INSTALL_PATH" &&
         ln -s "$(RUSTUP_TOOLCHAIN="$ASDF_INSTALL_VERSION" rustc --print sysroot)" "$ASDF_INSTALL_PATH"
