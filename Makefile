@@ -1,4 +1,4 @@
-SH_SRCFILES = $(shell git ls-files "bin/*")
+SH_SRCFILES = $(shell git ls-files "bin/*" "lib/commands/*")
 
 .PHONY: format
 format:
