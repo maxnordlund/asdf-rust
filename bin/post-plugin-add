@@ -2,6 +2,7 @@
 
 # shellcheck source=./exec-env
 source "$(dirname "$0")/exec-env"
+export PATH="$CARGO_HOME/bin:$PATH"
 
 rustup-init -y --no-modify-path --profile="${ASDF_RUST_PROFILE:-default}"
 
@@ -10,5 +11,5 @@ if type -P cargo | grep -q "^/usr"; then
     # /usr/local/bin/cargo
     system_toolchain="$(dirname "$(dirname "$(type -P cargo)")")"
 
-    PATH="$CARGO_HOME/bin:$PATH" rustup toolchain link system "$system_toolchain"
+    rustup toolchain link system "$system_toolchain"
 fi

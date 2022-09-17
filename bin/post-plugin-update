@@ -2,7 +2,7 @@
 
 # shellcheck source=./exec-env
 source "$(dirname "$0")/exec-env"
-
 export PATH="$CARGO_HOME/bin:$PATH"
+
 rustup self upgrade-data
 rustup check

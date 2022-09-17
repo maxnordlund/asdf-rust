@@ -1,3 +1,7 @@
 #!/usr/bin/env bash
 
-rustup show active-toolchain
+# shellcheck source=./exec-env
+source "$(dirname "$0")/exec-env"
+export PATH="$CARGO_HOME/bin:$PATH"
+
+rustup show active-toolchain | cut -d" " -f1

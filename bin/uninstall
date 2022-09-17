@@ -2,6 +2,7 @@
 
 # shellcheck source=./exec-env
 source "$(dirname "$0")/exec-env"
+export PATH="$CARGO_HOME/bin:$PATH"
 
-PATH="$CARGO_HOME/bin:$PATH" rustup uninstall "$ASDF_INSTALL_VERSION"
+rustup uninstall "$ASDF_INSTALL_VERSION"
 rm "$ASDF_INSTALL_PATH"

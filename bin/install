@@ -2,6 +2,7 @@
 
 # shellcheck source=./exec-env
 source "$(dirname "$0")/exec-env"
+export PATH="$CARGO_HOME/bin:$ASDF_INSTALL_PATH/bin:$PATH"
 
 install_rust() {
     local arguments="--no-self-update --profile=${ASDF_RUST_PROFILE:-default}"
@@ -19,7 +20,6 @@ install_rust() {
         arguments="$arguments --component $ASDF_RUST_COMPONENTS"
     fi
 
-    export PATH="$CARGO_HOME/bin:$PATH"
     # shellcheck disable=SC2086
     rustup toolchain install $arguments "$ASDF_INSTALL_VERSION" &&
         rmdir "$ASDF_INSTALL_PATH" &&
@@ -33,7 +33,7 @@ install_default_cargo_packages() {
         echo -ne "\nInstalling default cargo packages..."
 
         filtered_packages=$(grep -vE "^\s*#" <"$default_cargo_packages_file")
-        xargs env PATH="$ASDF_INSTALL_PATH/bin:$PATH" cargo install <<<"$filtered_packages"
+        xargs cargo install <<<"$filtered_packages"
     fi
 }
 
