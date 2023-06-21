@@ -48,17 +48,17 @@ https://github.com/code-lever/asdf-rust. From the former it took the GitHub
 action/test setup, and from the latter the decision to use [`rustup`][] instead
 of manual installation.
 
-The difference is that this did not, and does not, pipe a curl int `sh`. Even
+The difference is that this did not, and does not, pipe a curl into `sh`. Even
 though it's from https://rustup.rs, it feels a bit icky to do.
 
 Instead you need to install rustup yourself.
 
 Now it fully embraces [`rustup`][] by having only one global installation
-(under `ASDF_DATA_DIR`) of [`rustup][]. Then it symlinks the various versions
-as needed. This means only one download for a specific version. However, if you
-use a [channel](https://rust-lang.github.io/rustup/concepts/channels.html) as
-the rust version it will be updated if you run `rustup update`. Avoid this by
-using a precise version, like 1.65.0 or nightly-2022-08-11.
+(under `ASDF_DATA_DIR`) of [`rustup`][]. Then it symlinks the various versions
+as needed. This means only one download for a specific version. If you use a 
+[channel](https://rust-lang.github.io/rustup/concepts/channels.html) as the rust 
+version, it will be updated if you run `rustup update`. Avoid this by using a 
+precise version, like 1.65.0 or nightly-2022-08-11.
 
 ## License
 
