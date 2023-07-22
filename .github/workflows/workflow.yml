@@ -1,10 +1,6 @@
 name: Main workflow
 
-on:
-  pull_request:
-  push:
-  schedule:
-    - cron: 0 0 * * 5
+on: [pull_request, push]
 
 jobs:
   plugin_test:
@@ -26,15 +22,27 @@ jobs:
   lint:
     runs-on: ubuntu-latest
 
+    permissions:
+      security-events: write
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
-      - name: Install ShellCheck
-        run: brew install shellcheck
+        with:
+          fetch-depth: 0
 
       - name: Run ShellCheck
-        run: make lint
+        id: shellcheck
+        uses: redhat-plumbers-in-action/differential-shellcheck@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - if: ${{ always() }}
+        name: Upload artifact with ShellCheck defects in SARIF format
+        uses: actions/upload-artifact@v3
+        with:
+          name: Differential ShellCheck SARIF
+          path: ${{ steps.shellcheck.outputs.sarif }}
 
   format:
     runs-on: ubuntu-latest
@@ -44,7 +52,9 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Install shfmt
-        run: brew install shfmt
+        run: go install mvdan.cc/sh/v3/cmd/shfmt@latest
 
       - name: Run shfmt
-        run: make check-format
+        run: |
+            export PATH="${PATH}:$(go env GOPATH)/bin"
+            make check-format
