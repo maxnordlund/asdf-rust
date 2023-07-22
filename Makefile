@@ -10,4 +10,4 @@ check-format:
 
 .PHONY: lint
 lint:
-	shellcheck --source-path=SCRIPTDIR $(SH_SRCFILES)
+	shellcheck $(SH_SRCFILES)
