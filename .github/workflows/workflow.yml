@@ -1,6 +1,6 @@
 name: Main workflow
 
-on: [pull_request, push]
+on: pull_request
 
 jobs:
   plugin_test:
@@ -14,6 +14,12 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
+      - name: Ensure rustup-init is installed
+        run: |
+            mkdir -p ~/bin
+            curl https://sh.rustup.rs -sSf > ~/bin/rustup-init
+            echo ~/bin >> $GITHUB_PATH
+
       - name: asdf_plugin_test
         uses: asdf-vm/actions/plugin-test@v2
         with:

@@ -4,6 +4,11 @@
 source "$(dirname "$0")/exec-env"
 export PATH="$CARGO_HOME/bin:$PATH"
 
+if ! type rustup-init &>/dev/null; then
+    echo "You must install rustup-init before adding this plugin"
+    exit 1
+fi
+
 rustup-init -y --no-modify-path --profile="${ASDF_RUST_PROFILE:-default}"
 
 if type -P cargo | grep -q "^/usr"; then
