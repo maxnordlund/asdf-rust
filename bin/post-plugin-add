@@ -9,7 +9,10 @@ if ! type rustup-init &>/dev/null; then
     exit 1
 fi
 
-rustup-init -y --no-modify-path --profile="${ASDF_RUST_PROFILE:-default}"
+# Don't ask for confirmation/headless installation.
+# Don't print instructions for modifying your PATH as it might break asdf-rust
+# Don't install any toolchains, or update any existing default toolchain
+rustup-init -y --no-modify-path --default-toolchain none --no-update-default-toolchain
 
 if type -P cargo | grep -q "^/usr"; then
     # /usr/bin/cargo

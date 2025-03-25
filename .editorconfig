@@ -1,4 +1,4 @@
-# EditorConfig is awesome: https://EditorConfig.org
+# EditorConfig is awesome: https://editorconfig.org
 
 # top-most EditorConfig file
 root = true
@@ -10,3 +10,9 @@ end_of_line = lf
 charset = utf-8
 trim_trailing_whitespace = true
 insert_final_newline = false
+
+[Makefile]
+indent_style = tab
+
+[*.{yml,yaml}]
+indent_size = 2

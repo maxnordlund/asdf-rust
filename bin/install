@@ -5,25 +5,27 @@ source "$(dirname "$0")/exec-env"
 export PATH="$CARGO_HOME/bin:$ASDF_INSTALL_PATH/bin:$PATH"
 
 install_rust() {
-    local arguments="--no-self-update --profile=${ASDF_RUST_PROFILE:-default}"
+    local rustc
+    local arguments=(
+        --no-self-update
+        ${ASDF_RUST_PROFILE:+--profile="$ASDF_RUST_PROFILE"}
+        ${ASDF_RUST_TARGETS:+--target="$ASDF_RUST_TARGETS"}
+        ${ASDF_RUST_COMPONENTS:+--component="$ASDF_RUST_COMPONENTS"}
+    )
 
     if echo "$ASDF_INSTALL_VERSION" | grep -q "^nightly"; then
         # Allow rustup to downgrade the toolchain to satisfy your component choice
-        arguments="$arguments --allow-downgrade"
+        # Needed because nightly doesn't always build all components
+        arguments+=(--allow-downgrade)
     fi
 
-    if test -n "$ASDF_RUST_TARGETS"; then
-        arguments="$arguments --target $ASDF_RUST_TARGETS"
-    fi
-
-    if test -n "$ASDF_RUST_COMPONENTS"; then
-        arguments="$arguments --component $ASDF_RUST_COMPONENTS"
-    fi
+    arguments+=("$ASDF_INSTALL_VERSION")
 
     # shellcheck disable=SC2086
-    rustup toolchain install $arguments "$ASDF_INSTALL_VERSION" &&
-        rmdir "$ASDF_INSTALL_PATH" &&
-        ln -s "$(RUSTUP_TOOLCHAIN="$ASDF_INSTALL_VERSION" rustc --print sysroot)" "$ASDF_INSTALL_PATH"
+    rustup toolchain install "${arguments[@]}" || return
+    rustc=$(RUSTUP_TOOLCHAIN="$ASDF_INSTALL_VERSION" rustup which rustc)
+    rmdir "$ASDF_INSTALL_PATH" &&
+        ln -s "$($rustc --print sysroot)" "$ASDF_INSTALL_PATH"
 }
 
 install_default_cargo_packages() {
@@ -37,5 +39,5 @@ install_default_cargo_packages() {
     fi
 }
 
-install_rust
-install_default_cargo_packages
+install_rust &&
+    install_default_cargo_packages
