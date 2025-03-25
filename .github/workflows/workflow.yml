@@ -16,9 +16,9 @@ jobs:
     steps:
       - name: Ensure rustup-init is installed
         run: |
-            mkdir -p ~/bin
-            curl https://sh.rustup.rs -sSf > ~/bin/rustup-init
-            echo ~/bin >> $GITHUB_PATH
+          mkdir -p ~/bin
+          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs > ~/bin/rustup-init
+          echo ~/bin >> $GITHUB_PATH
 
       - name: asdf_plugin_test
         uses: asdf-vm/actions/plugin-test@v3
@@ -35,6 +35,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
+          # Differential ShellCheck requires full git history
           fetch-depth: 0
 
       - name: Run ShellCheck
@@ -43,7 +44,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - if: ${{ always() }}
+      - if: ${{ runner.debug == '1' && !cancelled() }}
         name: Upload artifact with ShellCheck defects in SARIF format
         uses: actions/upload-artifact@v4
         with:
@@ -62,5 +63,5 @@ jobs:
 
       - name: Run shfmt
         run: |
-            export PATH="${PATH}:$(go env GOPATH)/bin"
-            make check-format
+          export PATH="${PATH}:$(go env GOPATH)/bin"
+          make check-format
