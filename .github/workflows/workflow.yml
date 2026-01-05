@@ -33,7 +33,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           # Differential ShellCheck requires full git history
           fetch-depth: 0
@@ -56,7 +56,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Install shfmt
         run: go install mvdan.cc/sh/v3/cmd/shfmt@latest
